@@ -6,7 +6,7 @@
       <div class="logo"></div>
       <h4 class="ion-no-margin">
         <ion-text color="light" class="fw700">
-          Ionic 4 Start Theme
+          T-IoT App
         </ion-text>
       </h4>
     </div>
@@ -57,11 +57,11 @@
       </p>
     </form>
 
-    <p tappable (click)="forgotPass()" class="paz ion-text-right">
+    <!-- <p tappable (click)="forgotPass()" class="paz ion-text-right">
       <ion-text color="light">
         <strong>Forgot Pass?</strong>
       </ion-text>
-    </p>
+    </p> -->
 
     <div>
       <ion-button
@@ -86,12 +86,17 @@
 
       <ion-grid class="btn-group">
         <ion-row>
-          <ion-col size="4">
-            <ion-button shape="round" expand="full" color="secondary">
+          <ion-col>
+            <ion-button
+              shape="round"
+              expand="full"
+              color="secondary"
+              (click)="loginFB()"
+            >
               <ion-icon slot="icon-only" name="logo-facebook"></ion-icon>
             </ion-button>
           </ion-col>
-          <ion-col size="4">
+          <!-- <ion-col size="4">
             <ion-button shape="round" expand="full" color="secondary">
               <ion-icon slot="icon-only" name="logo-twitter"></ion-icon>
             </ion-button>
@@ -100,7 +105,7 @@
             <ion-button shape="round" expand="full" color="secondary">
               <ion-icon slot="icon-only" name="logo-googleplus"></ion-icon>
             </ion-button>
-          </ion-col>
+          </ion-col> -->
         </ion-row>
       </ion-grid>
     </div>
