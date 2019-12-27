@@ -29,6 +29,9 @@ export class LoginPage implements OnInit {
 
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
+    this.api.hasUser().then(value => {
+      this.goToHome();
+    });
   }
 
   ngOnInit() {
@@ -90,14 +93,17 @@ export class LoginPage implements OnInit {
     let email = this.onLoginForm.value.email;
     let password = this.onLoginForm.value.password;
 
-    try {
-      let res = await this.api.strapi.login(email, password);
-      console.log(res);
-      this.goToHome();
-    } catch (error) {
-      console.log(error);
-      this.showError();
-    }
+    this.api.strapi.login(email, password).then(
+      async res => {
+        console.log(res);
+        this.api.setLocalUser(res.user);
+        this.goToHome();
+      },
+      err => {
+        console.log(err);
+        this.showError();
+      }
+    );
   }
 
   goToRegister() {
