@@ -9,13 +9,14 @@ import { isObject } from "util";
 export class ApiService {
   public strapi = new Strapi("http://localhost:1337");
 
-  constructor(private storage: Storage) {}
+  constructor(public storage: Storage) {}
 
-  setLocalUser(user) {
-    this.storage.set("user", JSON.stringify(user)).then(
-      () => console.log("Stored item!"),
-      error => console.error("Error storing item", error)
-    );
+  async setLocalUser(user: object) {
+    try {
+      await this.storage.set("user", JSON.stringify(user));
+    } catch (error) {
+      console.error("Error storing item", error);
+    }
   }
   async getLocalUser() {
     try {

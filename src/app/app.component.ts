@@ -6,6 +6,7 @@ import { StatusBar } from "@ionic-native/status-bar/ngx";
 
 import { Pages } from "./interfaces/pages";
 import { ApiService } from "./service/api.service";
+import { Cordova } from "@ionic-native/core";
 
 @Component({
   selector: "app-root",
@@ -55,8 +56,10 @@ export class AppComponent {
     this.platform
       .ready()
       .then(() => {
-        this.statusBar.styleDefault();
-        this.splashScreen.hide();
+        if (Cordova) {
+          this.statusBar.styleDefault();
+          this.splashScreen.hide();
+        }
       })
       .catch(() => {});
   }
@@ -65,7 +68,8 @@ export class AppComponent {
     this.navCtrl.navigateForward("edit-profile");
   }
 
-  logout() {
+  async logout() {
+    await this.api.storage.clear();
     this.navCtrl.navigateRoot("/");
   }
 

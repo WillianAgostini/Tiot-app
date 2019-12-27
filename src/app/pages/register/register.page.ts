@@ -48,9 +48,10 @@ export class RegisterPage implements OnInit {
 
     this.api.strapi
       .register(fullName, email, password)
-      .then(success => {
-        console.log(success);
-        this.navCtrl.navigateRoot("/home-results");
+      .then(async res => {
+        console.log(res);
+        await this.api.setLocalUser(res.user);
+        this.goToHome();
       })
       .catch(err => {
         console.log(err);
@@ -75,5 +76,9 @@ export class RegisterPage implements OnInit {
 
   goToLogin() {
     this.navCtrl.navigateRoot("/");
+  }
+
+  goToHome() {
+    this.navCtrl.navigateRoot("/home-results");
   }
 }

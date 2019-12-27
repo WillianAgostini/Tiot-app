@@ -96,7 +96,7 @@ export class LoginPage implements OnInit {
     this.api.strapi.login(email, password).then(
       async res => {
         console.log(res);
-        this.api.setLocalUser(res.user);
+        await this.api.setLocalUser(res.user);
         this.goToHome();
       },
       err => {
