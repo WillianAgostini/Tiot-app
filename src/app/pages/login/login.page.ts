@@ -30,7 +30,7 @@ export class LoginPage implements OnInit {
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
     this.api.hasUser().then(value => {
-      this.goToHome();
+      if (value) this.goToHome();
     });
   }
 

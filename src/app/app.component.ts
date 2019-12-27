@@ -70,12 +70,13 @@ export class AppComponent {
 
   async logout() {
     await this.api.storage.clear();
+
     this.navCtrl.navigateRoot("/");
   }
 
   ionMenuClick() {
     this.api.getLocalUser().then(user => {
-      this.User = user;
+      this.User = Object.create(user);
       console.log(user);
     });
   }

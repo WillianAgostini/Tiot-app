@@ -1,7 +1,7 @@
-<ion-content padding class="login auth-page">
+<ion-content class="login auth-page ion-padding">
   <div class="auth-content">
     <!-- Logo -->
-    <div padding-horizontal text-center>
+    <div class="ion-padding-horizontal ion-text-center">
       <div class="logo"></div>
       <h3 class="ion-no-margin">
         <ion-text color="light" class="fw700">
@@ -12,7 +12,7 @@
 
     <!-- Register form -->
     <form [formGroup]="onRegisterForm" class="list-form">
-      <ion-item no-padding class="animated fadeInUp">
+      <ion-item class="animated fadeInUp ion-no-padding">
         <ion-label position="floating">
           <ion-icon name="mail" item-start></ion-icon>
           Full Name
@@ -33,7 +33,7 @@
         </ion-text>
       </p>
 
-      <ion-item no-padding class="animated fadeInUp">
+      <ion-item class="animated fadeInUp ion-no-padding">
         <ion-label position="floating">
           <ion-icon name="mail" item-start></ion-icon>
           Email
@@ -54,7 +54,7 @@
         </ion-text>
       </p>
 
-      <ion-item no-padding class="animated fadeInUp">
+      <ion-item class="animated fadeInUp ion-no-padding">
         <ion-label position="floating">
           <ion-icon name="lock" item-start></ion-icon>
           Password
@@ -77,7 +77,7 @@
       </p>
     </form>
 
-    <div margin-top>
+    <div class="ion-margin-top">
       <ion-button
         icon-left
         size="medium"
@@ -92,7 +92,7 @@
         Sign Up
       </ion-button>
 
-      <p text-center>
+      <p class="ion-text-center">
         <ion-text color="light">
           Or Sign Up with:
         </ion-text>
@@ -135,7 +135,7 @@
     </div>
 
     <!-- Other links -->
-    <div text-center margin-top>
+    <div class="ion-text-center ion-margin-top">
       <span (click)="goToLogin()" tappable>
         <ion-text color="light">
           <strong>I have an account!</strong>
