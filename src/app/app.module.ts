@@ -18,6 +18,7 @@ import { SearchFilterPageModule } from "./pages/modal/search-filter/search-filte
 // Components
 import { NotificationsComponent } from "./components/notifications/notifications.component";
 import { IonicStorageModule } from "@ionic/storage";
+import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 
 @NgModule({
   declarations: [AppComponent, NotificationsComponent],
@@ -35,7 +36,8 @@ import { IonicStorageModule } from "@ionic/storage";
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    InAppBrowser
   ],
   bootstrap: [AppComponent]
 })

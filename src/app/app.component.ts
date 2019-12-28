@@ -77,7 +77,6 @@ export class AppComponent {
   ionMenuClick() {
     this.api.getLocalUser().then(user => {
       this.User = Object.create(user);
-      console.log(user);
     });
   }
 }

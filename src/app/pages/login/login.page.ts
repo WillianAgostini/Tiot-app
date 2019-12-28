@@ -8,6 +8,7 @@ import {
   LoadingController
 } from "@ionic/angular";
 import { ApiService } from "src/app/service/api.service";
+import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 
 @Component({
   selector: "app-login",
@@ -24,7 +25,8 @@ export class LoginPage implements OnInit {
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     private formBuilder: FormBuilder,
-    private api: ApiService
+    private api: ApiService,
+    private iab: InAppBrowser
   ) {}
 
   ionViewWillEnter() {
@@ -39,6 +41,8 @@ export class LoginPage implements OnInit {
       email: [null, Validators.compose([Validators.required])],
       password: [null, Validators.compose([Validators.required])]
     });
+
+    this.onLoginForm.setValue({ email: "eu@gmail.com", password: "123456" });
   }
 
   async forgotPass() {
@@ -90,20 +94,38 @@ export class LoginPage implements OnInit {
   // // //
 
   async login() {
+    const loading = await this.loadingCtrl.create({
+      duration: 5000,
+      translucent: true
+    });
+    await loading.present();
+
     let email = this.onLoginForm.value.email;
     let password = this.onLoginForm.value.password;
 
-    this.api.strapi.login(email, password).then(
-      async res => {
-        console.log(res);
-        await this.api.setLocalUser(res.user);
-        this.goToHome();
-      },
-      err => {
-        console.log(err);
-        this.showError();
-      }
-    );
+    this.api.strapi
+      .login(email, password)
+      .then(
+        async res => {
+          console.log(res);
+          await this.api.setLocalUser(res.user);
+          this.goToHome();
+        },
+        err => {
+          console.log(err);
+          this.showError();
+        }
+      )
+      .finally(() => {
+        loading.dismiss();
+      });
+  }
+
+  loginFB() {
+    // const browser = this.iab.create("https://ionicframework.com/", "_system");
+    // browser.on("loadstart").subscribe(event => {
+    //   console.log(event.url);
+    // });
   }
 
   goToRegister() {
