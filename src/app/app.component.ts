@@ -1,24 +1,22 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 
-import { Platform, NavController } from "@ionic/angular";
-import { SplashScreen } from "@ionic-native/splash-screen/ngx";
-import { StatusBar } from "@ionic-native/status-bar/ngx";
+import { Platform, NavController } from '@ionic/angular';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 
-import { Pages } from "./interfaces/pages";
-import { ApiService } from "./service/api.service";
-import { Cordova } from "@ionic-native/core";
+import { Pages } from './interfaces/pages';
+import { ApiService } from './service/api.service';
+import { Cordova } from '@ionic-native/core';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "app.component.html",
-  styleUrls: ["./app.component.scss"]
+  selector: 'app-root',
+  templateUrl: 'app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   public appPages: Array<Pages>;
 
-  User = {
-    username: ""
-  };
+  fullName = '';
 
   constructor(
     private platform: Platform,
@@ -29,23 +27,23 @@ export class AppComponent {
   ) {
     this.appPages = [
       {
-        title: "Home",
-        url: "/home-results",
-        direct: "root",
-        icon: "home"
+        title: 'Home',
+        url: '/home-results',
+        direct: 'root',
+        icon: 'home'
       },
       {
-        title: "About",
-        url: "/about",
-        direct: "forward",
-        icon: "information-circle-outline"
+        title: 'About',
+        url: '/about',
+        direct: 'forward',
+        icon: 'information-circle-outline'
       },
 
       {
-        title: "App Settings",
-        url: "/settings",
-        direct: "forward",
-        icon: "cog"
+        title: 'App Settings',
+        url: '/settings',
+        direct: 'forward',
+        icon: 'cog'
       }
     ];
 
@@ -65,18 +63,18 @@ export class AppComponent {
   }
 
   goToEditProgile() {
-    this.navCtrl.navigateForward("edit-profile");
+    this.navCtrl.navigateForward('edit-profile');
   }
 
   async logout() {
     await this.api.storage.clear();
 
-    this.navCtrl.navigateRoot("/");
+    this.navCtrl.navigateRoot('/');
   }
 
   ionMenuClick() {
     this.api.getLocalUser().then(user => {
-      this.User = Object.create(user);
+      this.fullName = user.fullName;
     });
   }
 }

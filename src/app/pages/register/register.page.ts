@@ -1,17 +1,16 @@
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   NavController,
   MenuController,
   LoadingController
-} from "@ionic/angular";
-import { ApiService } from "src/app/service/api.service";
-import { load } from "@angular/core/src/render3";
+} from '@ionic/angular';
+import { ApiService } from 'src/app/service/api.service';
 
 @Component({
-  selector: "app-register",
-  templateUrl: "./register.page.html",
-  styleUrls: ["./register.page.scss"]
+  selector: 'app-register',
+  templateUrl: './register.page.html',
+  styleUrls: ['./register.page.scss']
 })
 export class RegisterPage implements OnInit {
   public onRegisterForm: FormGroup;
@@ -46,20 +45,26 @@ export class RegisterPage implements OnInit {
     let email = this.onRegisterForm.value.email;
     let password = this.onRegisterForm.value.password;
 
-    this.api.strapi
-      .register(fullName, email, password)
-      .then(async res => {
-        console.log(res);
-        await this.api.setLocalUser(res.user);
-        this.goToHome();
-      })
-      .catch(err => {
-        console.log(err);
+    this.api.signup(email, password, fullName).subscribe(
+      data => {
+        console.log(data);
+        this.api.me().subscribe(
+          data => {
+            console.log(data);
+            this.goToHome();
+          },
+          err => {
+            console.log(err);
+            this.showError();
+          }
+        );
+      },
+      err => {
+        console.warn(err);
         this.showError();
-      })
-      .finally(() => {
-        loader.dismiss();
-      });
+      },
+      () => loader.dismiss()
+    );
   }
 
   // // //
@@ -68,17 +73,17 @@ export class RegisterPage implements OnInit {
     const loading = await this.loadingCtrl.create({
       spinner: null,
       duration: 2000,
-      message: "Ops!",
+      message: 'Ops!',
       translucent: true
     });
     await loading.present();
   }
 
   goToLogin() {
-    this.navCtrl.navigateRoot("/");
+    this.navCtrl.navigateRoot('/');
   }
 
   goToHome() {
-    this.navCtrl.navigateRoot("/home-results");
+    this.navCtrl.navigateRoot('/home-results');
   }
 }

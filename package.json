@@ -33,7 +33,6 @@
     "core-js": "^2.5.4",
     "ionicons": "4.5.5",
     "rxjs": "~6.3.3",
-    "strapi-sdk-javascript": "^0.3.3",
     "zone.js": "~0.8.29"
   },
   "devDependencies": {

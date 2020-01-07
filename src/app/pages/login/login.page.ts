@@ -1,19 +1,19 @@
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   NavController,
   MenuController,
   ToastController,
   AlertController,
   LoadingController
-} from "@ionic/angular";
-import { ApiService } from "src/app/service/api.service";
-import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
+} from '@ionic/angular';
+import { ApiService } from 'src/app/service/api.service';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.page.html",
-  styleUrls: ["./login.page.scss"]
+  selector: 'app-login',
+  templateUrl: './login.page.html',
+  styleUrls: ['./login.page.scss']
 })
 export class LoginPage implements OnInit {
   public onLoginForm: FormGroup;
@@ -42,31 +42,31 @@ export class LoginPage implements OnInit {
       password: [null, Validators.compose([Validators.required])]
     });
 
-    this.onLoginForm.setValue({ email: "eu@gmail.com", password: "123456" });
+    this.onLoginForm.setValue({ email: 'eu@gmail.com', password: '123456' });
   }
 
   async forgotPass() {
     const alert = await this.alertCtrl.create({
-      header: "Forgot Password?",
-      message: "Enter you email address to send a reset link password.",
+      header: 'Forgot Password?',
+      message: 'Enter you email address to send a reset link password.',
       inputs: [
         {
-          name: "email",
-          type: "email",
-          placeholder: "Email"
+          name: 'email',
+          type: 'email',
+          placeholder: 'Email'
         }
       ],
       buttons: [
         {
-          text: "Cancel",
-          role: "cancel",
-          cssClass: "secondary",
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
           handler: () => {
-            console.log("Confirm Cancel");
+            console.log('Confirm Cancel');
           }
         },
         {
-          text: "Confirm",
+          text: 'Confirm',
           handler: async () => {
             const loader = await this.loadingCtrl.create({
               duration: 2000
@@ -76,9 +76,9 @@ export class LoginPage implements OnInit {
             loader.onWillDismiss().then(async l => {
               const toast = await this.toastCtrl.create({
                 showCloseButton: true,
-                message: "Email was sended successfully.",
+                message: 'Email was sended successfully.',
                 duration: 3000,
-                position: "bottom"
+                position: 'bottom'
               });
 
               toast.present();
@@ -103,22 +103,26 @@ export class LoginPage implements OnInit {
     let email = this.onLoginForm.value.email;
     let password = this.onLoginForm.value.password;
 
-    this.api.strapi
-      .login(email, password)
-      .then(
-        async res => {
-          console.log(res);
-          await this.api.setLocalUser(res.user);
-          this.goToHome();
-        },
-        err => {
-          console.log(err);
-          this.showError();
-        }
-      )
-      .finally(() => {
-        loading.dismiss();
-      });
+    this.api.login(email, password).subscribe(
+      data => {
+        console.log(data);
+        this.api.me().subscribe(
+          data => {
+            console.log(data);
+            this.goToHome();
+          },
+          err => {
+            console.log(err);
+            this.showError();
+          }
+        );
+      },
+      err => {
+        console.warn(err);
+        this.showError();
+      },
+      () => loading.dismiss()
+    );
   }
 
   loginFB() {
@@ -129,18 +133,18 @@ export class LoginPage implements OnInit {
   }
 
   goToRegister() {
-    this.navCtrl.navigateRoot("/register");
+    this.navCtrl.navigateRoot('/register');
   }
 
   goToHome() {
-    this.navCtrl.navigateRoot("/home-results");
+    this.navCtrl.navigateRoot('/home-results');
   }
 
-  async showError() {
+  async showError(message?) {
     const loading = await this.loadingCtrl.create({
       spinner: null,
       duration: 2000,
-      message: "Ops!",
+      message: message ? message : 'Ops!',
       translucent: true
     });
     await loading.present();
