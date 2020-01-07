@@ -11,13 +11,23 @@ import {
 import { catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { User } from '../models/user';
+import { initDomAdapter } from '@angular/platform-browser/src/browser';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService implements HttpInterceptor, HttpInterceptor {
-  constructor(public storage: Storage, public http: HttpClient) {}
+  constructor(public storage: Storage, public http: HttpClient) {
+    this.init();
+  }
 
+  async init() {
+    let has = await this.hasUser();
+    if (has) {
+      let user = await this.getLocalUser();
+      ApiService.token = user.token;
+    }
+  }
   public static token: string;
   apiUrl = 'http://localhost:3000/';
 
@@ -59,7 +69,7 @@ export class ApiService implements HttpInterceptor, HttpInterceptor {
       return JSON.parse(data);
     } catch (error) {
       console.log(error);
-      return '';
+      return null;
     }
   }
 
