@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button color="primary" (click)="closeModal()">
+        <ion-icon name="close" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      Adicionar dispositivo
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item class="ion-margin-bottom">
+    <ion-label color="primary" stacked>
+      <ion-text color="dark" class="fw500">Código</ion-text>
+    </ion-label>
+    <ion-input [(ngModel)]="name"></ion-input>
+  </ion-item>
+
+  <ion-label class="ion-text-wrap" color="waning">
+    Você deve estar próximo do dispositivo para realizar essa ação.
+  </ion-label>
+
+  <ion-button expand="full" color="primary" (click)="createDevice()">
+    Conectar
+  </ion-button>
+</ion-content>

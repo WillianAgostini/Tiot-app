@@ -39,11 +39,17 @@ export class AppComponent {
         icon: 'information-circle-outline'
       },
 
+      // {
+      //   title: 'App Settings',
+      //   url: '/settings',
+      //   direct: 'forward',
+      //   icon: 'cog'
+      // },
       {
-        title: 'App Settings',
-        url: '/settings',
+        title: 'Devices',
+        url: '/devices',
         direct: 'forward',
-        icon: 'cog'
+        icon: 'beer'
       }
     ];
 

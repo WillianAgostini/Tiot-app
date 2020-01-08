@@ -8,6 +8,8 @@ const routes: Routes = [
   { path: 'settings', loadChildren: './pages/settings/settings.module#SettingsPageModule' },
   { path: 'edit-profile', loadChildren: './pages/edit-profile/edit-profile.module#EditProfilePageModule' },
   { path: 'home-results', loadChildren: './pages/home-results/home-results.module#HomeResultsPageModule' },
+  { path: 'devices', loadChildren: './pages/devices/devices.module#DevicesPageModule' },
+  { path: 'add-device', loadChildren: './pages/add-device/add-device.module#AddDevicePageModule' },
 ];
 
 @NgModule({

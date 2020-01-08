@@ -8,7 +8,7 @@ import {
   HttpHandler,
   HttpEvent
 } from '@angular/common/http';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, retry } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { User } from '../models/user';
 import { initDomAdapter } from '@angular/platform-browser/src/browser';
@@ -22,11 +22,8 @@ export class ApiService implements HttpInterceptor, HttpInterceptor {
   }
 
   async init() {
-    let has = await this.hasUser();
-    if (has) {
-      let user = await this.getLocalUser();
-      ApiService.token = user.token;
-    }
+    let user = await this.getLocalUser();
+    if (user && user.token) ApiService.token = user.token;
   }
   public static token: string;
   apiUrl = 'http://localhost:3000/';
@@ -124,5 +121,15 @@ export class ApiService implements HttpInterceptor, HttpInterceptor {
           return data;
         })
       );
+  }
+
+  get(route: string) {
+    return this.http
+      .get(this.apiUrl + route, { observe: 'response' })
+      .pipe(retry(2));
+  }
+
+  post(route: string, obj: any) {
+    return this.http.post(this.apiUrl + route, obj, { observe: 'response' });
   }
 }

@@ -24,6 +24,8 @@ import { NotificationsComponent } from './components/notifications/notifications
 import { IonicStorageModule } from '@ionic/storage';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { ApiService } from './service/api.service';
+import { DevicesPageModule } from './pages/devices/devices.module';
+import { AddDevicePageModule } from './pages/add-device/add-device.module';
 
 @NgModule({
   declarations: [AppComponent, NotificationsComponent],
@@ -35,7 +37,9 @@ import { ApiService } from './service/api.service';
     AppRoutingModule,
     HttpClientModule,
     ImagePageModule,
-    SearchFilterPageModule
+    SearchFilterPageModule,
+    DevicesPageModule,
+    AddDevicePageModule
   ],
   entryComponents: [NotificationsComponent],
   providers: [
