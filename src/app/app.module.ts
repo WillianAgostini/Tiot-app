@@ -26,12 +26,24 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { ApiService } from './service/api.service';
 import { DevicesPageModule } from './pages/devices/devices.module';
 import { AddDevicePageModule } from './pages/add-device/add-device.module';
+import {
+  IMqttMessage,
+  MqttModule,
+  IMqttServiceOptions
+} from 'ngx-mqtt';
+
+export const MQTT_SERVICE_OPTIONS = {
+  hostname: 'localhost',
+  port: 8080,
+  path: ''
+};
 
 @NgModule({
   declarations: [AppComponent, NotificationsComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
     AppRoutingModule,

@@ -14,6 +14,9 @@ import { ImagePage } from './../modal/image/image.page';
 // Call notifications test by Popover and Custom Component.
 import { NotificationsComponent } from './../../components/notifications/notifications.component';
 import { ApiService } from 'src/app/service/api.service';
+import { MqttService, IMqttMessage } from 'ngx-mqtt';
+import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-home-results',
@@ -25,6 +28,9 @@ export class HomeResultsPage {
   yourLocation = '123 Test Street';
   themeCover = 'assets/img/ionic4-Start-Theme-cover.jpg';
 
+  private subscription: Subscription;
+  public message: string;
+  
   constructor(
     public navCtrl: NavController,
     public menuCtrl: MenuController,
@@ -32,11 +38,20 @@ export class HomeResultsPage {
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
     public toastCtrl: ToastController,
-    private api: ApiService
+    private api: ApiService,
+    public _mqttService: MqttService
   ) {}
 
   ionViewWillEnter() {
     this.menuCtrl.enable(true);
+    this.subscription = this._mqttService.observe('caveira').subscribe((message: IMqttMessage) => {
+      this.message = message.payload.toString();
+      console.log(message.payload.toString());
+    });
+  }
+
+  ionViewWillLeave(){
+    this.subscription.unsubscribe();
   }
 
   settings() {
