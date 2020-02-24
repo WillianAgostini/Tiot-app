@@ -81,19 +81,20 @@
   >
     Modal 2: Search Filter
   </ion-button> -->
+  <ion-card *ngFor="let device of ListDevices">
+    <ion-card-header>
+      <ion-card-subtitle>{{device.name}}</ion-card-subtitle>
+      <ion-card-title>{{device.message}}</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+Gráfico
+    </ion-card-content>
+  </ion-card>
 
-  <ion-list>
-    <ion-item *ngFor="let device of ListDevices">
-      <ion-label>{{device.name}}</ion-label>
-      <ion-label slot="end">{{device.message}}</ion-label>
-      <!-- <div *ngIf="device.subscription.closed == true; else elseBlock">
-        <ion-label>Conectado</ion-label>
-      </div>
-      <ng-template #elseBlock>
-        <ion-label>Disconectado</ion-label>
-      </ng-template> -->
-    </ion-item>
-  </ion-list>
+
+
+
 
   <popmenu></popmenu>
 </ion-content>

@@ -32,13 +32,6 @@ export class AppComponent {
         direct: 'root',
         icon: 'home'
       },
-      {
-        title: 'About',
-        url: '/about',
-        direct: 'forward',
-        icon: 'information-circle-outline'
-      },
-
       // {
       //   title: 'App Settings',
       //   url: '/settings',
@@ -50,6 +43,12 @@ export class AppComponent {
         url: '/devices',
         direct: 'forward',
         icon: 'beer'
+      },
+      {
+        title: 'About',
+        url: '/about',
+        direct: 'forward',
+        icon: 'information-circle-outline'
       }
     ];
 
