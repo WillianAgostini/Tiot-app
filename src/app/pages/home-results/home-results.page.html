@@ -60,7 +60,7 @@
     </ion-item>
   </ion-card> -->
 
-  <ion-card class="bg-white">
+  <!-- <ion-card class="bg-white">
     <ion-img [src]="themeCover"></ion-img>
     <ion-button
       expand="full"
@@ -80,7 +80,20 @@
     (click)="searchFilter()"
   >
     Modal 2: Search Filter
-  </ion-button>
+  </ion-button> -->
+
+  <ion-list>
+    <ion-item *ngFor="let device of ListDevices">
+      <ion-label>{{device.name}}</ion-label>
+      <ion-label slot="end">{{device.message}}</ion-label>
+      <!-- <div *ngIf="device.subscription.closed == true; else elseBlock">
+        <ion-label>Conectado</ion-label>
+      </div>
+      <ng-template #elseBlock>
+        <ion-label>Disconectado</ion-label>
+      </ng-template> -->
+    </ion-item>
+  </ion-list>
 
   <popmenu></popmenu>
 </ion-content>
