@@ -1,7 +1,7 @@
 import { Subscription } from "rxjs";
 
 export class Device {
-  id: number;
+  _id: number;
   createDate: string;
   name: string;
   subscription: Subscription;

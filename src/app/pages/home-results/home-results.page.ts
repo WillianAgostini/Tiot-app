@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, QueryList, ViewChildren, ElementRef } from '@angular/core';
 import {
   NavController,
   AlertController,
@@ -17,7 +17,9 @@ import { ApiService } from 'src/app/service/api.service';
 import { MqttService, IMqttMessage } from 'ngx-mqtt';
 import { Subscription } from 'rxjs';
 import { Device } from 'src/app/models/device';
-
+import { Chart } from 'chart.js';
+import { Query } from '@angular/compiler/src/core';
+import { Packet } from 'src/app/models/packet';
 
 @Component({
   selector: 'app-home-results',
@@ -31,6 +33,9 @@ export class HomeResultsPage {
 
   public message: string;
   public ListDevices = new Array<Device>();
+  @ViewChildren("barChart") barChart: QueryList<ElementRef>;
+  bars: any;
+  colorArray: any;
 
   constructor(
     public navCtrl: NavController,
@@ -46,6 +51,9 @@ export class HomeResultsPage {
   ionViewWillEnter() {
     this.menuCtrl.enable(true);
 
+    this.barChart.changes.subscribe(() => this.createBarChart());
+
+
     this.api.get('devices').subscribe(
       devices => {
         this.ListDevices = devices.body as Array<Device>;
@@ -54,19 +62,52 @@ export class HomeResultsPage {
       },
       err => { }
     );
+  }
+
+  createBarChart() {
+    let elements = this.barChart.toArray();
+    if (elements.length == 0)
+      return;
+
+    elements.forEach((element, index) => {
+      let device = this.ListDevices[index];
+      this.api.get('packet/' + device.name +"/12").subscribe(
+        packet => {
+          let list = packet.body as Array<Packet>;
+          console.log(list);
+
+          var label = list.map(x => new Date(x.createDate).getMinutes().toString());
+          var data = list.map(x => x.payload);
+          this.DrawChart(element, label, data);
+
+        },
+        err => { }
+      );
+
+    });
+
+  }
 
 
+  private DrawChart(element: ElementRef<any>, label: string[], data: string[]) {
+    this.bars = new Chart(element.nativeElement, {
+      type: 'line',
+      data: {
+        labels: label,
+        datasets: [{
+          label: 'Viewers in millions',
+          data: data,
+        }]
+      }
+    });
   }
 
   StarWebSocket(devices: Array<Device>) {
     devices.forEach(element => {
-      console.log(element);
-
       element.subscription = this._mqttService.observe(element.name).subscribe((message: IMqttMessage) => {
         element.message = message.payload.toString() + " ºC";
         console.log(message.payload.toString());
       });
-      console.log(element.subscription);
     })
   };
 
