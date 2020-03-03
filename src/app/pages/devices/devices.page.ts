@@ -10,17 +10,33 @@ import { ModalController } from '@ionic/angular';
 })
 export class DevicesPage implements OnInit {
   devices = [];
-  constructor(public api: ApiService, public modalCtrl: ModalController) {}
 
-  // ionViewWillEnter(){}
+  constructor(public api: ApiService, public modalCtrl: ModalController) { }
 
   ngOnInit() {
+    this.GetDevices();
+  }
+
+  GetDevices() {
     this.api.get('devices').subscribe(
       devices => {
         this.devices = devices.body as any;
         console.log(devices);
       },
-      err => {}
+      err => { }
+    );
+  }
+
+  deleteDevice(id) {
+    console.log(id);
+    this.api.delete("devices/" + id).subscribe(
+      (s) => {
+        console.log(s);
+      },
+      err => {
+        console.log(err);
+      },
+      () => this.GetDevices()
     );
   }
 

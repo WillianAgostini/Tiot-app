@@ -15,8 +15,7 @@
   <ion-card class="bg-white" class="ion-no-margin">
     <ion-card-header>
       <h1 class="ion-margin-bottom">
-        <ion-text color="primary"
-          ><strong>Dispositivos Conectados</strong>
+        <ion-text color="primary"><strong>Dispositivos Conectados</strong>
         </ion-text>
       </h1>
     </ion-card-header>
@@ -24,11 +23,19 @@
     <ion-card-content>
       <ion-list>
         <ion-item *ngFor="let device of devices">
-          <ion-label>
-            <h2>{{device.name}}</h2>
-            <p>{{device._id}}</p>
-            <!-- <p>Add dia X</p> -->
-          </ion-label>
+          <ion-row>
+            <ion-col>
+              <ion-label>
+                <h2>{{device.name}}</h2>
+                <p>{{device._id}}</p>
+              </ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label>
+                <ion-icon (click)="deleteDevice(device._id)" name="close-circle-outline"></ion-icon>
+              </ion-label>
+            </ion-col>
+          </ion-row>
         </ion-item>
       </ion-list>
     </ion-card-content>
@@ -37,20 +44,13 @@
   <ion-card class="bg-white" class="ion-no-margin">
     <ion-card-header>
       <h1 class="ion-margin-bottom">
-        <ion-text color="primary"
-          ><strong>Novo dispositivo ?</strong>
+        <ion-text color="primary"><strong>Novo dispositivo ?</strong>
         </ion-text>
       </h1>
     </ion-card-header>
 
     <ion-card-content>
-      <ion-button
-        class="ion-margin"
-        shape="round"
-        expand="full"
-        color="secondary"
-        (click)="newDevice()"
-      >
+      <ion-button class="ion-margin" shape="round" expand="full" color="secondary" (click)="newDevice()">
         Conectar Tiot-Beer
       </ion-button>
     </ion-card-content>

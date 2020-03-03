@@ -46,7 +46,9 @@ export class HomeResultsPage {
     public toastCtrl: ToastController,
     private api: ApiService,
     public _mqttService: MqttService
-  ) { }
+  ) {
+    // this.api.delete("packet").subscribe(s => console.log(s), s => console.log(s))
+  }
 
   ionViewWillEnter() {
     this.menuCtrl.enable(true);
@@ -71,7 +73,7 @@ export class HomeResultsPage {
 
     elements.forEach((element, index) => {
       let device = this.ListDevices[index];
-      this.api.get('packet/' + device.name +"/12").subscribe(
+      this.api.get('packet/' + device.name + "/12").subscribe(
         packet => {
           let list = packet.body as Array<Packet>;
           console.log(list);

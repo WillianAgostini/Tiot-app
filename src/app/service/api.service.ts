@@ -132,4 +132,8 @@ export class ApiService implements HttpInterceptor, HttpInterceptor {
   post(route: string, obj: any) {
     return this.http.post(this.apiUrl + route, obj, { observe: 'response' });
   }
+
+  delete(id:string){
+    return this.http.delete(this.apiUrl + id, { observe: 'response' });
+  }
 }
