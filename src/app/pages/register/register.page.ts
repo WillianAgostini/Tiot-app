@@ -1,11 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  NavController,
-  MenuController,
-  LoadingController
-} from '@ionic/angular';
-import { ApiService } from 'src/app/service/api.service';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {LoadingController, MenuController, NavController} from '@ionic/angular';
+import {ApiService} from 'src/app/service/api.service';
 
 @Component({
   selector: 'app-register',
@@ -16,12 +12,9 @@ export class RegisterPage implements OnInit {
   public onRegisterForm: FormGroup;
 
   constructor(
-    public navCtrl: NavController,
-    public menuCtrl: MenuController,
-    public loadingCtrl: LoadingController,
-    private formBuilder: FormBuilder,
-    private api: ApiService
-  ) {}
+      public navCtrl: NavController, public menuCtrl: MenuController,
+      public loadingCtrl: LoadingController, private formBuilder: FormBuilder,
+      private api: ApiService) {}
 
   ionViewWillEnter() {
     this.menuCtrl.enable(false);
@@ -36,46 +29,39 @@ export class RegisterPage implements OnInit {
   }
 
   async signUp() {
-    const loader = await this.loadingCtrl.create({
-      duration: 5000
-    });
+    const loader = await this.loadingCtrl.create({duration: 5000});
     loader.present();
 
     let fullName = this.onRegisterForm.value.fullName;
     let email = this.onRegisterForm.value.email;
     let password = this.onRegisterForm.value.password;
 
-    this.api.signup(email, password, fullName).subscribe(
-      data => {
-        console.log(data);
-        this.api.me().subscribe(
-          data => {
-            console.log(data);
-            this.goToHome();
-          },
-          err => {
-            console.log(err);
-            this.showError();
-          }
-        );
-      },
-      err => {
-        console.warn(err);
-        this.showError();
-      },
-      () => loader.dismiss()
-    );
+    this.api.signup(email, password, fullName)
+        .subscribe(
+            data => {
+              console.log(data);
+              this.api.me().subscribe(
+                  data => {
+                    console.log(data);
+                    this.goToHome();
+                  },
+                  err => {
+                    console.log(err);
+                    this.showError();
+                  });
+            },
+            err => {
+              console.warn(err);
+              this.showError();
+            },
+            () => loader.dismiss());
   }
 
   // // //
 
   async showError() {
-    const loading = await this.loadingCtrl.create({
-      spinner: null,
-      duration: 2000,
-      message: 'Ops!',
-      translucent: true
-    });
+    const loading = await this.loadingCtrl.create(
+        {spinner: null, duration: 2000, message: 'Ops!', translucent: true});
     await loading.present();
   }
 

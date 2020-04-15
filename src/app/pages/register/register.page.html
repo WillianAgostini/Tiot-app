@@ -17,17 +17,10 @@
           <ion-icon name="mail" item-start></ion-icon>
           Full Name
         </ion-label>
-        <ion-input
-          color="secondary"
-          type="text"
-          formControlName="fullName"
-        ></ion-input>
+        <ion-input color="secondary" type="text" formControlName="fullName"></ion-input>
       </ion-item>
-      <p
-        ion-text
-        class="text08"
-        *ngIf="onRegisterForm.get('fullName').touched && onRegisterForm.get('fullName').hasError('required')"
-      >
+      <p ion-text class="text08"
+        *ngIf="onRegisterForm.get('fullName').touched && onRegisterForm.get('fullName').hasError('required')">
         <ion-text color="warning">
           This field is required
         </ion-text>
@@ -38,17 +31,10 @@
           <ion-icon name="mail" item-start></ion-icon>
           Email
         </ion-label>
-        <ion-input
-          color="secondary"
-          type="email"
-          formControlName="email"
-        ></ion-input>
+        <ion-input color="secondary" type="email" formControlName="email"></ion-input>
       </ion-item>
-      <p
-        ion-text
-        class="text08"
-        *ngIf="onRegisterForm.get('email').touched && onRegisterForm.get('email').hasError('required')"
-      >
+      <p ion-text class="text08"
+        *ngIf="onRegisterForm.get('email').touched && onRegisterForm.get('email').hasError('required')">
         <ion-text color="warning">
           This field is required
         </ion-text>
@@ -59,18 +45,10 @@
           <ion-icon name="lock" item-start></ion-icon>
           Password
         </ion-label>
-        <ion-input
-          color="secondary"
-          type="password"
-          formControlName="password"
-        ></ion-input>
+        <ion-input color="secondary" type="password" formControlName="password"></ion-input>
       </ion-item>
-      <p
-        ion-text
-        color="warning"
-        class="text08"
-        *ngIf="onRegisterForm.get('password').touched && onRegisterForm.get('password').hasError('required')"
-      >
+      <p ion-text color="warning" class="text08"
+        *ngIf="onRegisterForm.get('password').touched && onRegisterForm.get('password').hasError('required')">
         <ion-text color="warning">
           This field is required
         </ion-text>
@@ -78,16 +56,8 @@
     </form>
 
     <div class="ion-margin-top">
-      <ion-button
-        icon-left
-        size="medium"
-        expand="full"
-        shape="round"
-        color="dark"
-        (click)="signUp()"
-        [disabled]="!onRegisterForm.valid"
-        tappable
-      >
+      <ion-button icon-left size="medium" expand="full" shape="round" color="dark" (click)="signUp()"
+        [disabled]="!onRegisterForm.valid" tappable>
         <ion-icon name="log-in"></ion-icon>
         Sign Up
       </ion-button>

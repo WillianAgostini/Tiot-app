@@ -1,93 +1,79 @@
-import { Component, ViewChild, QueryList, ViewChildren, ElementRef } from '@angular/core';
-import {
-  NavController,
-  AlertController,
-  MenuController,
-  ToastController,
-  PopoverController,
-  ModalController
-} from '@ionic/angular';
+import {Query} from '@angular/compiler/src/core';
+import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {AlertController, MenuController, ModalController, NavController, PopoverController, ToastController} from '@ionic/angular';
+import {Chart} from 'chart.js';
+import {IMqttMessage, MqttService} from 'ngx-mqtt';
+import {Subscription} from 'rxjs';
+import {Device} from 'src/app/models/device';
+import {Packet} from 'src/app/models/packet';
+import {ApiService} from 'src/app/service/api.service';
 
 // Modals
-import { SearchFilterPage } from '../../pages/modal/search-filter/search-filter.page';
-import { ImagePage } from './../modal/image/image.page';
+import {SearchFilterPage} from '../../pages/modal/search-filter/search-filter.page';
+
 // Call notifications test by Popover and Custom Component.
-import { NotificationsComponent } from './../../components/notifications/notifications.component';
-import { ApiService } from 'src/app/service/api.service';
-import { MqttService, IMqttMessage } from 'ngx-mqtt';
-import { Subscription } from 'rxjs';
-import { Device } from 'src/app/models/device';
-import { Chart } from 'chart.js';
-import { Query } from '@angular/compiler/src/core';
-import { Packet } from 'src/app/models/packet';
+import {NotificationsComponent} from './../../components/notifications/notifications.component';
+import {ImagePage} from './../modal/image/image.page';
 
 @Component({
   selector: 'app-home-results',
   templateUrl: './home-results.page.html',
   styleUrls: ['./home-results.page.scss']
 })
-export class HomeResultsPage {
+export class HomeResultsPage implements OnInit {
   searchKey = '';
   yourLocation = '123 Test Street';
   themeCover = 'assets/img/ionic4-Start-Theme-cover.jpg';
 
   public message: string;
   public ListDevices = new Array<Device>();
-  @ViewChildren("barChart") barChart: QueryList<ElementRef>;
+  @ViewChildren('barChart') barChart: QueryList<ElementRef>;
   bars: any;
   colorArray: any;
 
   constructor(
-    public navCtrl: NavController,
-    public menuCtrl: MenuController,
-    public popoverCtrl: PopoverController,
-    public alertCtrl: AlertController,
-    public modalCtrl: ModalController,
-    public toastCtrl: ToastController,
-    private api: ApiService,
-    public _mqttService: MqttService
-  ) {
-    // this.api.delete("packet").subscribe(s => console.log(s), s => console.log(s))
+      public navCtrl: NavController, public menuCtrl: MenuController,
+      public popoverCtrl: PopoverController, public alertCtrl: AlertController,
+      public modalCtrl: ModalController, public toastCtrl: ToastController,
+      private api: ApiService, public _mqttService: MqttService) {
+    // this.api.delete("packet").subscribe(s => console.log(s), s =>
+    // console.log(s))
+  }
+
+  ngOnInit() {}
+
+  RangeChanged(event, device) {
+    let min = event.detail.value.lower;
+    let max = event.detail.value.upper;
   }
 
   ionViewWillEnter() {
     this.menuCtrl.enable(true);
-
     this.barChart.changes.subscribe(() => this.createBarChart());
 
-
-    this.api.get('devices').subscribe(
-      devices => {
-        this.ListDevices = devices.body as Array<Device>;
-        console.log(this.ListDevices)
-        this.StarWebSocket(this.ListDevices);
-      },
-      err => { }
-    );
+    this.api.get('devices').subscribe(devices => {
+      this.ListDevices = devices.body as Array<Device>;
+      console.log(this.ListDevices);
+      this.StartWebSocket(this.ListDevices);
+    }, err => {});
   }
 
   createBarChart() {
     let elements = this.barChart.toArray();
-    if (elements.length == 0)
-      return;
+    if (elements.length == 0) return;
 
     elements.forEach((element, index) => {
       let device = this.ListDevices[index];
-      this.api.get('packet/' + device.name + "/12").subscribe(
-        packet => {
-          let list = packet.body as Array<Packet>;
-          console.log(list);
+      this.api.get('packet/' + device.name + '/12').subscribe(packet => {
+        let list = packet.body as Array<Packet>;
+        console.log(list);
 
-          var label = list.map(x => new Date(x.createDate).getMinutes().toString());
-          var data = list.map(x => x.payload);
-          this.DrawChart(element, label, data);
-
-        },
-        err => { }
-      );
-
+        var label =
+            list.map(x => new Date(x.createDate).getMinutes().toString());
+        var data = list.map(x => x.payload);
+        this.DrawChart(element, label, data);
+      }, err => {});
     });
-
   }
 
 
@@ -104,12 +90,14 @@ export class HomeResultsPage {
     });
   }
 
-  StarWebSocket(devices: Array<Device>) {
+  StartWebSocket(devices: Array<Device>) {
     devices.forEach(element => {
-      element.subscription = this._mqttService.observe(element.name).subscribe((message: IMqttMessage) => {
-        element.message = message.payload.toString() + " ºC";
-        console.log(message.payload.toString());
-      });
+      element.subscription = this._mqttService.observe(element.name)
+                                 .subscribe((message: IMqttMessage) => {
+                                   element.message =
+                                       message.payload.toString() + ' ºC';
+                                   console.log(message.payload.toString());
+                                 });
     })
   };
 
@@ -163,17 +151,13 @@ export class HomeResultsPage {
   // }
 
   async searchFilter() {
-    const modal = await this.modalCtrl.create({
-      component: SearchFilterPage
-    });
+    const modal = await this.modalCtrl.create({component: SearchFilterPage});
     return await modal.present();
   }
 
   async presentImage(image: any) {
-    const modal = await this.modalCtrl.create({
-      component: ImagePage,
-      componentProps: { value: image }
-    });
+    const modal = await this.modalCtrl.create(
+        {component: ImagePage, componentProps: {value: image}});
     return await modal.present();
   }
 
