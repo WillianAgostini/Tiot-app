@@ -29,12 +29,12 @@
       <ion-item class="animated fadeInUp ion-no-padding">
         <ion-label position="floating">
           <ion-icon name="mail" item-start></ion-icon>
-          Email
+          Username
         </ion-label>
-        <ion-input color="secondary" type="email" formControlName="email"></ion-input>
+        <ion-input color="secondary" type="text" formControlName="username"></ion-input>
       </ion-item>
       <p ion-text class="text08"
-        *ngIf="onRegisterForm.get('email').touched && onRegisterForm.get('email').hasError('required')">
+        *ngIf="onRegisterForm.get('username').touched && onRegisterForm.get('username').hasError('required')">
         <ion-text color="warning">
           This field is required
         </ion-text>

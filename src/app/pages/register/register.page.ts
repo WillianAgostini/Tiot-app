@@ -23,7 +23,7 @@ export class RegisterPage implements OnInit {
   ngOnInit() {
     this.onRegisterForm = this.formBuilder.group({
       fullName: [null, Validators.compose([Validators.required])],
-      email: [null, Validators.compose([Validators.required])],
+      username: [null, Validators.compose([Validators.required])],
       password: [null, Validators.compose([Validators.required])]
     });
   }
@@ -33,10 +33,10 @@ export class RegisterPage implements OnInit {
     loader.present();
 
     let fullName = this.onRegisterForm.value.fullName;
-    let email = this.onRegisterForm.value.email;
+    let username = this.onRegisterForm.value.username;
     let password = this.onRegisterForm.value.password;
 
-    this.api.signup(email, password, fullName)
+    this.api.signup(username, password, fullName)
         .subscribe(
             data => {
               console.log(data);

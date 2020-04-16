@@ -1,6 +1,6 @@
 import {Query} from '@angular/compiler/src/core';
 import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
-import {AlertController, MenuController, ModalController, NavController, PopoverController, ToastController} from '@ionic/angular';
+import {AlertController, LoadingController, MenuController, ModalController, NavController, PopoverController, ToastController} from '@ionic/angular';
 import {Chart} from 'chart.js';
 import {IMqttMessage, MqttService} from 'ngx-mqtt';
 import {Subscription} from 'rxjs';
@@ -24,6 +24,8 @@ export class HomeResultsPage implements OnInit {
   searchKey = '';
   yourLocation = '123 Test Street';
   themeCover = 'assets/img/ionic4-Start-Theme-cover.jpg';
+  min = 0;
+  max = 0;
 
   public message: string;
   public ListDevices = new Array<Device>();
@@ -35,16 +37,19 @@ export class HomeResultsPage implements OnInit {
       public navCtrl: NavController, public menuCtrl: MenuController,
       public popoverCtrl: PopoverController, public alertCtrl: AlertController,
       public modalCtrl: ModalController, public toastCtrl: ToastController,
-      private api: ApiService, public _mqttService: MqttService) {
+      private api: ApiService, public _mqttService: MqttService,
+      public loadingCtrl: LoadingController) {
     // this.api.delete("packet").subscribe(s => console.log(s), s =>
     // console.log(s))
   }
 
   ngOnInit() {}
 
-  RangeChanged(event, device) {
-    let min = event.detail.value.lower;
-    let max = event.detail.value.upper;
+  Save(device: Device) {
+    console.log(device.name + '/action');
+    let interval = {min: 5, max: 10};
+    this._mqttService.publish(device.name + '/action', JSON.stringify(interval))
+        .subscribe();
   }
 
   ionViewWillEnter() {
@@ -92,12 +97,25 @@ export class HomeResultsPage implements OnInit {
 
   StartWebSocket(devices: Array<Device>) {
     devices.forEach(element => {
-      element.subscription = this._mqttService.observe(element.name)
-                                 .subscribe((message: IMqttMessage) => {
-                                   element.message =
-                                       message.payload.toString() + ' ºC';
-                                   console.log(message.payload.toString());
-                                 });
+      element.subscription =
+          this._mqttService.observe(element.name)
+              .subscribe((message: IMqttMessage) => {
+                element.message = message.payload.toString();
+                console.log(message.topic, message.payload.toString());
+              });
+      element.minSub =
+          this._mqttService.observe(element.name + '/min')
+              .subscribe((message: IMqttMessage) => {
+                element.min = message.payload.toString();
+                console.log(message.topic, message.payload.toString());
+              });
+
+      element.maxSub =
+          this._mqttService.observe(element.name + '/max')
+              .subscribe((message: IMqttMessage) => {
+                element.max = message.payload.toString();
+                console.log(message.topic, message.payload.toString());
+              });
     })
   };
 
@@ -169,5 +187,15 @@ export class HomeResultsPage implements OnInit {
       showBackdrop: true
     });
     return await popover.present();
+  }
+
+  async showMessage(message?: string) {
+    const loading = await this.loadingCtrl.create({
+      spinner: null,
+      duration: 2000,
+      message: message ? message : 'Salvo!',
+      translucent: true
+    });
+    await loading.present();
   }
 }

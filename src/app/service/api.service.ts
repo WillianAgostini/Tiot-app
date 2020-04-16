@@ -1,21 +1,13 @@
-import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
-import {
-  HttpClient,
-  HttpParams,
-  HttpInterceptor,
-  HttpRequest,
-  HttpHandler,
-  HttpEvent
-} from '@angular/common/http';
-import { catchError, map, retry } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
-import { User } from '../models/user';
-import { initDomAdapter } from '@angular/platform-browser/src/browser';
+import {HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpParams, HttpRequest} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {initDomAdapter} from '@angular/platform-browser/src/browser';
+import {Storage} from '@ionic/storage';
+import {Observable, throwError} from 'rxjs';
+import {catchError, map, retry} from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root'
-})
+import {User} from '../models/user';
+
+@Injectable({providedIn: 'root'})
 export class ApiService implements HttpInterceptor, HttpInterceptor {
   constructor(public storage: Storage, public http: HttpClient) {
     this.init();
@@ -28,29 +20,22 @@ export class ApiService implements HttpInterceptor, HttpInterceptor {
   public static token: string;
   apiUrl = 'http://localhost:3000/';
 
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<any>, next: HttpHandler):
+      Observable<HttpEvent<any>> {
     // add authorization header with basic auth credentials if available
-    request = request.clone({
-      setHeaders: {
-        Authorization: 'Bearer ' + ApiService.token
-      }
-    });
+    request = request.clone(
+        {setHeaders: {Authorization: 'Bearer ' + ApiService.token}});
 
     //    return next.handle(request);
-    return next.handle(request).pipe(
-      catchError(err => {
-        if (err.status === 401) {
-          // auto logout if 401 response returned from api
-          //this.authenticationService.logout();
-          //location.reload(true);
-        }
-        const error = err.error.message || err.statusText;
-        return throwError(error);
-      })
-    );
+    return next.handle(request).pipe(catchError(err => {
+      if (err.status === 401) {
+        // auto logout if 401 response returned from api
+        // this.authenticationService.logout();
+        // location.reload(true);
+      }
+      const error = err.error.message || err.statusText;
+      return throwError(error);
+    }));
   }
 
   async setLocalUser(user: User) {
@@ -77,63 +62,55 @@ export class ApiService implements HttpInterceptor, HttpInterceptor {
 
   login(username: string, password: string) {
     return this.http
-      .post<any>(
-        this.apiUrl + 'login',
-        { username, password },
-        { observe: 'response' }
-      )
-      .pipe(
-        map(data => {
+        .post<any>(
+            this.apiUrl + 'login', {username, password}, {observe: 'response'})
+        .pipe(map(data => {
           if (data) {
             ApiService.token = data.body.token;
           }
           return data;
-        })
-      );
+        }));
   }
+
 
   signup(username: string, password: string, fullName: string) {
     return this.http
-      .post<any>(
-        this.apiUrl + 'signup',
-        { username, password, fullName },
-        { observe: 'response' }
-      )
-      .pipe(
-        map(data => {
+        .post<any>(
+            this.apiUrl + 'signup', {username, password, fullName},
+            {observe: 'response'})
+        .pipe(map(data => {
           if (data) {
             ApiService.token = data.body.token;
           }
           return data;
-        })
-      );
+        }));
   }
 
   me() {
-    return this.http
-      .get<User>(this.apiUrl + 'users/me', { observe: 'response' })
-      .pipe(
-        map(data => {
+    return this.http.get<User>(this.apiUrl + 'users/me', {observe: 'response'})
+        .pipe(map(data => {
           if (data) {
             data.body.token = ApiService.token;
             this.setLocalUser(data.body);
           }
           return data;
-        })
-      );
+        }));
   }
 
   get(route: string) {
-    return this.http
-      .get(this.apiUrl + route, { observe: 'response' })
-      .pipe(retry(2));
+    return this.http.get(this.apiUrl + route, {observe: 'response'})
+        .pipe(retry(2));
   }
 
   post(route: string, obj: any) {
-    return this.http.post(this.apiUrl + route, obj, { observe: 'response' });
+    return this.http.post(this.apiUrl + route, obj, {observe: 'response'});
   }
 
-  delete(id:string){
-    return this.http.delete(this.apiUrl + id, { observe: 'response' });
+  put(route: string, obj: any) {
+    return this.http.put(this.apiUrl + route, obj);
+  }
+
+  delete(id: string) {
+    return this.http.delete(this.apiUrl + id, {observe: 'response'});
   }
 }
