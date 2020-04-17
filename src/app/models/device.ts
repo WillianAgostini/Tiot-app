@@ -10,4 +10,6 @@ export class Device {
   message: string;
   min: string;
   max: string;
+  newMin: string;
+  newMax: string;
 }

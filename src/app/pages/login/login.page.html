@@ -18,17 +18,10 @@
           <ion-icon name="mail" item-start></ion-icon>
           Email
         </ion-label>
-        <ion-input
-          color="secondary"
-          type="email"
-          formControlName="email"
-        ></ion-input>
+        <ion-input color="secondary" type="email" formControlName="email"></ion-input>
       </ion-item>
-      <p
-        ion-text
-        class="text08"
-        *ngIf="onLoginForm.get('email').touched && onLoginForm.get('email').hasError('required')"
-      >
+      <p ion-text class="text08"
+        *ngIf="onLoginForm.get('email').touched && onLoginForm.get('email').hasError('required')">
         <ion-text color="warning">
           Required Field
         </ion-text>
@@ -39,18 +32,10 @@
           <ion-icon name="lock" item-start></ion-icon>
           Password
         </ion-label>
-        <ion-input
-          color="secondary"
-          type="password"
-          formControlName="password"
-        ></ion-input>
+        <ion-input color="secondary" type="password" formControlName="password"></ion-input>
       </ion-item>
-      <p
-        ion-text
-        color="warning"
-        class="text08"
-        *ngIf="onLoginForm.get('password').touched && onLoginForm.get('password').hasError('required')"
-      >
+      <p ion-text color="warning" class="text08"
+        *ngIf="onLoginForm.get('password').touched && onLoginForm.get('password').hasError('required')">
         <ion-text color="warning">
           Required Field
         </ion-text>
@@ -64,16 +49,8 @@
     </p> -->
 
     <div>
-      <ion-button
-        icon-left
-        size="medium"
-        expand="full"
-        shape="round"
-        color="dark"
-        (click)="login()"
-        [disabled]="!onLoginForm.valid"
-        tappable
-      >
+      <ion-button icon-left size="medium" expand="full" shape="round" color="dark" (click)="login()"
+        [disabled]="!onLoginForm.valid" tappable>
         <ion-icon name="log-in"></ion-icon>
         Signin
       </ion-button>
@@ -86,7 +63,7 @@
 
       <ion-grid class="btn-group">
         <ion-row>
-          <ion-col>
+          <!-- <ion-col>
             <ion-button
               shape="round"
               expand="full"
@@ -95,7 +72,7 @@
             >
               <ion-icon slot="icon-only" name="logo-facebook"></ion-icon>
             </ion-button>
-          </ion-col>
+          </ion-col> -->
           <!-- <ion-col size="4">
             <ion-button shape="round" expand="full" color="secondary">
               <ion-icon slot="icon-only" name="logo-twitter"></ion-icon>

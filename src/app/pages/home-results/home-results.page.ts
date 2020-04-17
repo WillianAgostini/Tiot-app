@@ -46,10 +46,20 @@ export class HomeResultsPage implements OnInit {
   ngOnInit() {}
 
   Save(device: Device) {
-    console.log(device.name + '/action');
-    let interval = {min: 5, max: 10};
-    this._mqttService.publish(device.name + '/action', JSON.stringify(interval))
+    let interval = {min: device.newMin, max: device.newMax};
+    this._mqttService
+        .publish(device.name + '/action', JSON.stringify(interval), {qos: 2})
         .subscribe();
+  }
+
+  setQuantityMin(value: string, device: Device) {
+    let num = +value;
+    device.newMin = num.toString()
+  }
+
+  setQuantityMax(value, device: Device) {
+    let num = +value;
+    device.newMax = num.toString()
   }
 
   ionViewWillEnter() {
