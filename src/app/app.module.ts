@@ -22,7 +22,7 @@ import {SearchFilterPageModule} from './pages/modal/search-filter/search-filter.
 import {ApiService} from './service/api.service';
 
 export const MQTT_SERVICE_OPTIONS = {
-  hostname: 'localhost',
+  hostname: '191.52.140.35',
   port: 8080,
   path: ''
 };
