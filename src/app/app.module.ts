@@ -23,8 +23,8 @@ import {ApiService} from './service/api.service';
 
 export const MQTT_SERVICE_OPTIONS = {
   hostname: '191.52.140.35',
-  port: 8080,
-  path: ''
+  port: 3001,
+  path: '',
 };
 
 @NgModule({
