@@ -7,6 +7,7 @@ import {Subscription} from 'rxjs';
 import {Device} from 'src/app/models/device';
 import {Packet} from 'src/app/models/packet';
 import {ApiService} from 'src/app/service/api.service';
+import {WebsocketMqttService} from 'src/app/service/websocket-mqtt.service';
 
 // Modals
 import {SearchFilterPage} from '../../pages/modal/search-filter/search-filter.page';
@@ -29,15 +30,15 @@ export class HomeResultsPage implements OnInit {
 
   public message: string;
   public ListDevices = new Array<Device>();
-  @ViewChildren('barChart') barChart: QueryList<ElementRef>;
-  bars: any;
-  colorArray: any;
+  // @ViewChildren('barChart') barChart: QueryList<ElementRef>;
+  // bars: any;
+  // colorArray: any;
 
   constructor(
       public navCtrl: NavController, public menuCtrl: MenuController,
       public popoverCtrl: PopoverController, public alertCtrl: AlertController,
       public modalCtrl: ModalController, public toastCtrl: ToastController,
-      private api: ApiService, public _mqttService: MqttService,
+      private api: ApiService, public wbMqtt: WebsocketMqttService,
       public loadingCtrl: LoadingController) {
     // this.api.delete("packet").subscribe(s => console.log(s), s =>
     // console.log(s))
@@ -47,7 +48,7 @@ export class HomeResultsPage implements OnInit {
 
   Save(device: Device) {
     let interval = {min: device.newMin, max: device.newMax};
-    this._mqttService
+    this.wbMqtt._mqttService
         .publish(device.name + '/action', JSON.stringify(interval), {qos: 2})
         .subscribe();
   }
@@ -63,76 +64,86 @@ export class HomeResultsPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.menuCtrl.enable(true);
-    this.barChart.changes.subscribe(() => this.createBarChart());
+    this.api.hasUser().then(value => {
+      if (!value) this.goToLogin();
+    });
 
+    this.menuCtrl.enable(true);
+    // this.barChart.changes.subscribe(() => this.createBarChart());
     this.api.get('devices').subscribe(devices => {
-      this.ListDevices = devices.body as Array<Device>;
+      this.ListDevices = this.wbMqtt.setDevices(devices.body as Array<Device>);
+
+
       console.log(this.ListDevices);
-      this.StartWebSocket(this.ListDevices);
+      // this.StartWebSocket(this.ListDevices);
     }, err => {});
   }
 
-  createBarChart() {
-    let elements = this.barChart.toArray();
-    if (elements.length == 0) return;
-
-    elements.forEach((element, index) => {
-      let device = this.ListDevices[index];
-      this.api.get('packet/' + device.name + '/12').subscribe(packet => {
-        let list = packet.body as Array<Packet>;
-        console.log(list);
-
-        var label =
-            list.map(x => new Date(x.createDate).getMinutes().toString());
-        var data = list.map(x => x.payload);
-        this.DrawChart(element, label, data);
-      }, err => {});
-    });
+  goToLogin() {
+    this.navCtrl.navigateRoot('');
   }
 
+  // createBarChart() {
+  //   let elements = this.barChart.toArray();
+  //   if (elements.length == 0) return;
 
-  private DrawChart(element: ElementRef<any>, label: string[], data: string[]) {
-    this.bars = new Chart(element.nativeElement, {
-      type: 'line',
-      data: {
-        labels: label,
-        datasets: [{
-          label: 'Viewers in millions',
-          data: data,
-        }]
-      }
-    });
-  }
+  //   elements.forEach((element, index) => {
+  //     let device = this.ListDevices[index];
+  //     this.api.get('packet/' + device.name + '/12').subscribe(packet => {
+  //       let list = packet.body as Array<Packet>;
+  //       console.log(list);
 
-  StartWebSocket(devices: Array<Device>) {
-    devices.forEach(element => {
-      element.subscription =
-          this._mqttService.observe(element.name)
-              .subscribe((message: IMqttMessage) => {
-                element.message = message.payload.toString();
-                console.log(message.topic, message.payload.toString());
-              });
-      element.minSub =
-          this._mqttService.observe(element.name + '/min')
-              .subscribe((message: IMqttMessage) => {
-                element.min = message.payload.toString();
-                console.log(message.topic, message.payload.toString());
-              });
+  //       var label =
+  //           list.map(x => new Date(x.createDate).getMinutes().toString());
+  //       var data = list.map(x => x.payload);
+  //       this.DrawChart(element, label, data);
+  //     }, err => {});
+  //   });
+  // }
 
-      element.maxSub =
-          this._mqttService.observe(element.name + '/max')
-              .subscribe((message: IMqttMessage) => {
-                element.max = message.payload.toString();
-                console.log(message.topic, message.payload.toString());
-              });
-    })
-  };
+
+  // private DrawChart(element: ElementRef<any>, label: string[], data:
+  // string[]) {
+  //   this.bars = new Chart(element.nativeElement, {
+  //     type: 'line',
+  //     data: {
+  //       labels: label,
+  //       datasets: [{
+  //         label: 'Viewers in millions',
+  //         data: data,
+  //       }]
+  //     }
+  //   });
+  // }
+
+  // StartWebSocket(devices: Array<Device>) {
+  //   devices.forEach(element => {
+  //     element.subscription =
+  //         this._mqttService.observe(element.name)
+  //             .subscribe((message: IMqttMessage) => {
+  //               element.message = message.payload.toString();
+  //               console.log(message.topic, message.payload.toString());
+  //             });
+  //     element.minSub =
+  //         this._mqttService.observe(element.name + '/min')
+  //             .subscribe((message: IMqttMessage) => {
+  //               element.min = message.payload.toString();
+  //               console.log(message.topic, message.payload.toString());
+  //             });
+
+  //     element.maxSub =
+  //         this._mqttService.observe(element.name + '/max')
+  //             .subscribe((message: IMqttMessage) => {
+  //               element.max = message.payload.toString();
+  //               console.log(message.topic, message.payload.toString());
+  //             });
+  //   })
+  // };
 
   ionViewWillLeave() {
-    this.ListDevices.forEach(element => {
-      element.subscription.unsubscribe();
-    });
+    // this.ListDevices.forEach(element => {
+    //   element.subscription.unsubscribe();
+    // });
   }
 
   settings() {

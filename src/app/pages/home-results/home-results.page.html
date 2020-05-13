@@ -98,25 +98,46 @@
     </ion-card-header>
 
     <ion-card-content>
-      <canvas #barChart></canvas>
-      <ion-list>
-        <ion-item>
-          <ion-label>Min:</ion-label>
-          <ion-input type="number" (input)="setQuantityMin($event.target.value, device)"></ion-input>
-          <ion-label>Max:</ion-label>
-          <ion-input type="number" (input)="setQuantityMax($event.target.value, device)"></ion-input>
-          <ion-button (click)="Save(device)" color="success" shape="round" size="small" slot="end">
-            <ion-icon name="checkmark-circle-outline"></ion-icon>
-          </ion-button>
 
-        </ion-item>
-      </ion-list>
+      <!-- <canvas #barChart></canvas> -->
+
+      <ion-row>
+        <ion-label>Alterar intervalo de temperatura:</ion-label>
+      </ion-row>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <div>
+              <ion-label>Min:</ion-label>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <ion-input type="number" (input)="setQuantityMin($event.target.value, device)"></ion-input>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <ion-label>Max:</ion-label>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <ion-input type="number" (input)="setQuantityMax($event.target.value, device)"></ion-input>
+            </div>
+          </ion-col>
+          <ion-col>
+            <div>
+              <ion-button (click)="Save(device)" color="success" shape="round" size="small" slot="end">
+                <ion-icon name="checkmark-circle-outline"></ion-icon>
+              </ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
     </ion-card-content>
   </ion-card>
 
-
-
-
-
-  <popmenu></popmenu>
 </ion-content>
