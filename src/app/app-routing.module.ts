@@ -29,6 +29,11 @@ const routes: Routes = [
     loadChildren: './pages/add-device/add-device.module#AddDevicePageModule'
   },
   {
+    path: 'device-detail',
+    loadChildren:
+        './pages/device-detail/device-detail.module#DeviceDetailModule'
+  },
+  {
     path: '**',
     loadChildren:
         './pages/home-results/home-results.module#HomeResultsPageModule'

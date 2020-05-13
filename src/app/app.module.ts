@@ -15,6 +15,7 @@ import {AppComponent} from './app.component';
 // Components
 import {NotificationsComponent} from './components/notifications/notifications.component';
 import {AddDevicePageModule} from './pages/add-device/add-device.module';
+import {DeviceDetailModule} from './pages/device-detail/device-detail.module';
 import {DevicesPageModule} from './pages/devices/devices.module';
 // Modal Pages
 import {ImagePageModule} from './pages/modal/image/image.module';
@@ -41,7 +42,7 @@ export const MQTT_SERVICE_OPTIONS = {
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS), IonicModule.forRoot(),
     IonicStorageModule.forRoot(), AppRoutingModule, HttpClientModule,
     ImagePageModule, SearchFilterPageModule, DevicesPageModule,
-    AddDevicePageModule
+    DeviceDetailModule, AddDevicePageModule
   ],
   entryComponents: [NotificationsComponent],
   providers: [
