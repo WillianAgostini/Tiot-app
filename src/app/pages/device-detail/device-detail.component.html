@@ -1,9 +1,13 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>Devices</ion-title>
+
+    <!-- <ion-buttons slot="start"> -->
+    <a slot="start" [routerLink]="'/home-results'">
+      <ion-icon name="arrow-back" color="light"></ion-icon>
+    </a>
+    <!-- </ion-buttons> -->
+
+    <ion-title>{{name}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -14,10 +18,10 @@
 
   <ion-card class="bg-white" class="ion-no-margin">
     <ion-card-header>
-      <h1 class="ion-margin-bottom">
+      <!-- <h1 class="ion-margin-bottom">
         <ion-text color="primary"><strong>{{name}}</strong>
         </ion-text>
-      </h1>
+      </h1> -->
       <ion-label>Cada resultado corresponde a 1 minuto.</ion-label>
       <ion-grid>
         <ion-row>

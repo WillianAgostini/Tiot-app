@@ -45,9 +45,10 @@ export class HomeResultsPage implements OnInit {
     // console.log(s))
   }
 
-  ngOnInit() {
-    // this.router.navigate(['device-detail'], {queryParams: {name:
-    // 'popular'}});
+  ngOnInit() {}
+
+  GotoInfo(deviceName) {
+    this.router.navigate(['device-detail'], {queryParams: {name: deviceName}});
   }
 
   Save(device: Device) {
