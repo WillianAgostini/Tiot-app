@@ -1,5 +1,6 @@
 import {Query} from '@angular/compiler/src/core';
 import {Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {Router} from '@angular/router';
 import {AlertController, LoadingController, MenuController, ModalController, NavController, PopoverController, ToastController} from '@ionic/angular';
 import {Chart} from 'chart.js';
 import {IMqttMessage, MqttService} from 'ngx-mqtt';
@@ -39,12 +40,15 @@ export class HomeResultsPage implements OnInit {
       public popoverCtrl: PopoverController, public alertCtrl: AlertController,
       public modalCtrl: ModalController, public toastCtrl: ToastController,
       private api: ApiService, public wbMqtt: WebsocketMqttService,
-      public loadingCtrl: LoadingController) {
+      public loadingCtrl: LoadingController, public router: Router) {
     // this.api.delete("packet").subscribe(s => console.log(s), s =>
     // console.log(s))
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // this.router.navigate(['device-detail'], {queryParams: {name:
+    // 'popular'}});
+  }
 
   Save(device: Device) {
     let interval = {min: device.newMin, max: device.newMax};
