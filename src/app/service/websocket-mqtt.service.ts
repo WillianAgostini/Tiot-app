@@ -29,24 +29,25 @@ export class WebsocketMqttService {
   StartWebSocket() {
     this.ListDevices.forEach(element => {
       element.subscription =
-          this._mqttService.observe(element.name)
+          this._mqttService.observe(element.name + '/packet')
               .subscribe((message: IMqttMessage) => {
-                element.message = message.payload.toString();
-                console.log(message.topic, message.payload.toString());
+                element.message = message.payload.toString().split('/')[0];
+                element.status = message.payload.toString().split('/')[1] == '1'
+                console.log(message.topic, element);
               });
-      element.minSub =
-          this._mqttService.observe(element.name + '/min')
-              .subscribe((message: IMqttMessage) => {
-                element.min = message.payload.toString();
-                console.log(message.topic, message.payload.toString());
-              });
+      element.minSub = this._mqttService.observe(element.name + '/min')
+                           .subscribe((message: IMqttMessage) => {
+                             element.min = message.payload.toString();
+                             // console.log(message.topic,
+                             // message.payload.toString());
+                           });
 
-      element.maxSub =
-          this._mqttService.observe(element.name + '/max')
-              .subscribe((message: IMqttMessage) => {
-                element.max = message.payload.toString();
-                console.log(message.topic, message.payload.toString());
-              });
+      element.maxSub = this._mqttService.observe(element.name + '/max')
+                           .subscribe((message: IMqttMessage) => {
+                             element.max = message.payload.toString();
+                             // console.log(message.topic,
+                             // message.payload.toString());
+                           });
     })
   };
 }

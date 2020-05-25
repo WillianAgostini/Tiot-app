@@ -1,6 +1,7 @@
 import {HttpClient, HttpEvent, HttpHandler, HttpInterceptor, HttpParams, HttpRequest} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {initDomAdapter} from '@angular/platform-browser/src/browser';
+import {Router} from '@angular/router';
 import {Storage} from '@ionic/storage';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map, retry} from 'rxjs/operators';
@@ -9,7 +10,8 @@ import {User} from '../models/user';
 
 @Injectable({providedIn: 'root'})
 export class ApiService implements HttpInterceptor, HttpInterceptor {
-  constructor(public storage: Storage, public http: HttpClient) {
+  constructor(
+      public storage: Storage, public http: HttpClient, public router: Router) {
     this.init();
   }
 
@@ -31,7 +33,8 @@ export class ApiService implements HttpInterceptor, HttpInterceptor {
     return next.handle(request).pipe(catchError(err => {
       if (err.status === 401) {
         // auto logout if 401 response returned from api
-        // this.authenticationService.logout();
+        this.storage.remove('user');
+        this.router.navigate(['']);
         // location.reload(true);
       }
       const error = err.error.message || err.statusText;

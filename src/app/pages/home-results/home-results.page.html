@@ -95,6 +95,12 @@
         <ion-row>
           <ion-label> Max: {{device.max}} ºC</ion-label>
         </ion-row>
+        <ion-row>
+          <ion-label> Geladeira: {{(device.status) ? 'Ligada' : 'Desligada'}}</ion-label>
+        </ion-row>
+        <ion-row>
+          <ion-label> ip: {{device.ip}}</ion-label>
+        </ion-row>
       </ion-card-subtitle>
     </ion-card-header>
 
@@ -112,28 +118,26 @@
       <ion-grid>
         <ion-row>
           <ion-col>
-            <div>
-              <ion-label>Min:</ion-label>
-            </div>
+            <ion-item>
+              <ion-label position="floating">Mínimo:</ion-label>
+              <ion-input type="number" (input)="setQuantityMin($event.target.value, device)">
+              </ion-input>
+            </ion-item>
           </ion-col>
           <ion-col>
-            <div>
-              <ion-input type="number" (input)="setQuantityMin($event.target.value, device)"></ion-input>
-            </div>
+
+            <ion-item>
+              <ion-label position="floating">Máximo:</ion-label>
+              <ion-input type="number" (input)="setQuantityMax($event.target.value, device)">
+              </ion-input>
+            </ion-item>
+
           </ion-col>
+
           <ion-col>
+            <br>
             <div>
-              <ion-label>Max:</ion-label>
-            </div>
-          </ion-col>
-          <ion-col>
-            <div>
-              <ion-input type="number" (input)="setQuantityMax($event.target.value, device)"></ion-input>
-            </div>
-          </ion-col>
-          <ion-col>
-            <div>
-              <ion-button (click)="Save(device)" color="success" shape="round" size="small" slot="end">
+              <ion-button (click)="Save(device)" color="success" shape="round" expand='full' slot="end">
                 <ion-icon name="checkmark-circle-outline"></ion-icon>
               </ion-button>
             </div>

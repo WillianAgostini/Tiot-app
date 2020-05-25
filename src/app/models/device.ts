@@ -7,9 +7,12 @@ export class Device {
   subscription: Subscription;
   minSub: Subscription;
   maxSub: Subscription;
+  statusSub: Subscription;
   message: string;
   min: string;
   max: string;
+  status: boolean;
   newMin: string;
   newMax: string;
+  ip: string;
 }

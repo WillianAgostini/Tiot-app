@@ -51,6 +51,11 @@
           <ion-label>
             {{packet.payload}} ºC
           </ion-label>
+
+          <ion-label>
+            {{packet.status ? 'Ligado' : 'Desligado'}}
+          </ion-label>
+
         </ion-item>
       </ion-list>
     </ion-card-content>

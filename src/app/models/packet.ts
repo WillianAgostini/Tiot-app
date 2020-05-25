@@ -4,4 +4,5 @@ export class Packet {
   user: string;
   deviceName: string;
   createDate: Date;
+  status: boolean
 }

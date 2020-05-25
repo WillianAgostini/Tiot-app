@@ -30,7 +30,7 @@ import {ApiService} from './service/api.service';
 
 export const MQTT_SERVICE_OPTIONS = {
   hostname: '127.0.0.1',
-  port: 8080,
+  port: 3001,
   path: '',
 };
 
