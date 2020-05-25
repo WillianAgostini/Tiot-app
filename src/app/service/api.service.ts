@@ -20,8 +20,8 @@ export class ApiService implements HttpInterceptor, HttpInterceptor {
     if (user && user.token) ApiService.token = user.token;
   }
   public static token: string;
-  // apiUrl = 'http://191.52.140.35:3000/';
-  apiUrl = 'http://127.0.0.1:3000/';
+  apiUrl = 'http://191.52.140.35:3000/';
+  // apiUrl = 'http://127.0.0.1:3000/';
 
   intercept(request: HttpRequest<any>, next: HttpHandler):
       Observable<HttpEvent<any>> {

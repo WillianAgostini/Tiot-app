@@ -30,14 +30,14 @@
     "@ionic/pro": "2.0.4",
     "@ionic/storage": "^2.2.0",
     "chart.js": "^2.9.3",
+    "cordova-android": "^8.1.0",
     "cordova-plugin-inappbrowser": "^3.1.0",
     "core-js": "^2.5.4",
     "ionicons": "4.5.5",
     "mqtt": "^3.0.0",
     "ngx-mqtt": "^6.13.2",
     "rxjs": "~6.3.3",
-    "zone.js": "~0.8.29",
-    "cordova-android": "~7.0.0"
+    "zone.js": "~0.8.29"
   },
   "devDependencies": {
     "@angular-devkit/architect": "~0.12.3",
@@ -84,6 +84,8 @@
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-ionic-keyboard": {}
     },
-    "platforms": []
+    "platforms": [
+      "android"
+    ]
   }
 }

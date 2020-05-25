@@ -34,3 +34,5 @@ dist/
 Thumbs.db
 UserInterfaceState.xcuserstate
 yarn.lock
+tiot.apk
+app-release-unsigned.apk

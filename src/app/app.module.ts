@@ -22,17 +22,17 @@ import {ImagePageModule} from './pages/modal/image/image.module';
 import {SearchFilterPageModule} from './pages/modal/search-filter/search-filter.module';
 import {ApiService} from './service/api.service';
 
-// export const MQTT_SERVICE_OPTIONS = {
-//   hostname: '191.52.140.35',
-//   port: 3001,
-//   path: '',
-// };
-
 export const MQTT_SERVICE_OPTIONS = {
-  hostname: '127.0.0.1',
+  hostname: '191.52.140.35',
   port: 3001,
   path: '',
 };
+
+// export const MQTT_SERVICE_OPTIONS = {
+//   hostname: '127.0.0.1',
+//   port: 3001,
+//   path: '',
+// };
 
 
 @NgModule({
