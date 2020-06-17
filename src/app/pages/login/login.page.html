@@ -16,28 +16,28 @@
       <ion-item class="animated fadeInUp ion-no-padding">
         <ion-label position="floating">
           <ion-icon name="mail" item-start></ion-icon>
-          Email
+          Usuário
         </ion-label>
         <ion-input color="secondary" type="email" formControlName="email"></ion-input>
       </ion-item>
       <p ion-text class="text08"
         *ngIf="onLoginForm.get('email').touched && onLoginForm.get('email').hasError('required')">
         <ion-text color="warning">
-          Required Field
+          Campo requerido
         </ion-text>
       </p>
 
       <ion-item class="animated fadeInUp ion-no-padding">
         <ion-label position="floating">
           <ion-icon name="lock" item-start></ion-icon>
-          Password
+          Senha
         </ion-label>
         <ion-input color="secondary" type="password" formControlName="password"></ion-input>
       </ion-item>
       <p ion-text color="warning" class="text08"
         *ngIf="onLoginForm.get('password').touched && onLoginForm.get('password').hasError('required')">
         <ion-text color="warning">
-          Required Field
+          Campo requerido
         </ion-text>
       </p>
     </form>
@@ -52,13 +52,13 @@
       <ion-button icon-left size="medium" expand="full" shape="round" color="dark" (click)="login()"
         [disabled]="!onLoginForm.valid" tappable>
         <ion-icon name="log-in"></ion-icon>
-        Signin
+        Login
       </ion-button>
 
       <p class="ion-text-center">
-        <ion-text color="light">
+        <!-- <ion-text color="light">
           Or Signin with:
-        </ion-text>
+        </ion-text> -->
       </p>
 
       <ion-grid class="btn-group">
@@ -90,7 +90,7 @@
     <!-- Other links -->
     <div class="ion-text-center ion-margin-top">
       <span (click)="goToRegister()" class="paz" tappable>
-        <ion-text color="light"> New here? <strong>Sign Up</strong> </ion-text>
+        <ion-text color="light"> Novo por aqui? <strong>Cadastre-se</strong> </ion-text>
       </span>
     </div>
   </div>
