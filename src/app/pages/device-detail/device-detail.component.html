@@ -22,20 +22,23 @@
         <ion-text color="primary"><strong>{{name}}</strong>
         </ion-text>
       </h1> -->
-      <ion-label>Cada resultado corresponde a 1 minuto.</ion-label>
       <ion-grid>
+        <ion-label>Buscar resultados nos últimos:</ion-label>
         <ion-row>
-
           <ion-col>
-            <ion-label>Buscar últimos resultados:</ion-label>
+            <ion-button color="primary" (click)="update('24h')">24h</ion-button>
           </ion-col>
           <ion-col>
-            <ion-input [(ngModel)]="interval" (input)="setLimit($event.target.value)"></ion-input>
+            <ion-button color="secondary" (click)="update('7d')">7 dias</ion-button>
           </ion-col>
           <ion-col>
-            <ion-button (click)="getPackets()" color="success" shape="round" size="small">
-              <ion-icon name="checkmark-circle-outline"></ion-icon>
-            </ion-button>
+            <ion-button color="tertiary" (click)="update('1m')">1 mês</ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button color="success" (click)="update('3m')">3 meses</ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button color="success" (click)="update('6m')">6 meses</ion-button>
           </ion-col>
 
         </ion-row>
@@ -43,7 +46,17 @@
     </ion-card-header>
 
     <ion-card-content>
-      <ion-list>
+      <ion-progress-bar *ngIf="isLoading" type="indeterminate"></ion-progress-bar>
+      <canvas #lineCanvas></canvas>
+      <ion-grid>
+        <ion-row>
+          <ion-col class="ion-text-start">{{firstDate | date :'dd/MM HH:mm'}}
+          </ion-col>
+          <ion-col class="ion-text-end">{{lastDate | date :'dd/MM HH:mm'}}</ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <!-- <ion-list>
         <ion-item *ngFor="let packet of packetList">
           <ion-label>
             {{packet.createDate | date :'dd/MM HH:mm'}}
@@ -57,7 +70,7 @@
           </ion-label>
 
         </ion-item>
-      </ion-list>
+      </ion-list> -->
     </ion-card-content>
   </ion-card>
 
